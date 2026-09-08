@@ -9,11 +9,17 @@ Compact, current-state facts only. Not a changelog — update in place, don't ap
   them (confirmed). Only fill the 9 columns above.
 
 ## Conventions
-- Library Ref = Footprint Ref, always identical (unified naming, confirmed by user).
-- Library Path = `SCH/<Ref>.SchLib`
-- Footprint Path = `PCB/<Ref>.PcbLib`
-- `SCH/` and `PCB/` folders hold the actual Altium library files as the project grows.
+- Library Ref and Footprint Ref can differ (reverted from a brief "always identical" rule —
+  real vendor libraries don't follow that, e.g. AP2112K-3.3's PcbLib file is named
+  `AP2112K-3P3TRG1` but its footprint inside is named `SOT_RG1_DIO`). Always derive each from
+  the actual file/component, never force them to match.
+- Library Ref = name of the schematic symbol inside the SchLib (usually = file name).
+- Footprint Ref = name of the footprint pattern inside the PcbLib (often a generic package
+  descriptor, may differ from the PcbLib file name and from Library Ref).
+- Schematic libraries live in `PCB/Library/SCH/`, PCB footprint libraries in `PCB/Library/PCB/`.
+  Excel paths are relative to `PCB/Library/` (e.g. `SCH/DHT22.SchLib`).
+- User's workflow: they create the SchLib/PcbLib files in Altium first, then ask to add the
+  part to Excel — check the actual files before writing the row.
 
 ## Open questions
-- ESP32-WROOM-32 row (added before the unified-naming rule) still has Library Ref
-  `ESP32-WROOM-32` ≠ Footprint Ref `MODULE_ESP32-WROOM-32` — not yet reconciled with the user.
+- None currently.
