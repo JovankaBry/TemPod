@@ -2,13 +2,47 @@
 
 ## Trigger
 Activate when the user gives a new component to add to the parts library — a part number,
-a datasheet link/file, or both.
+a datasheet link/file, or both. Also activate on **"add `<component>` to library"** (or
+similar) — this specifically means the pattern below: files need to be moved AND documented.
 
-**Expected order of operations**: the user creates the actual `.SchLib`/`.PcbLib` files in
-Altium first, then asks to add the part to the Excel library. So always check the actual
-library folders for the real file/component names **before** writing the row — don't
-guess/default a Ref name if the files may already exist. Only fall back to a default (part
-number) if genuinely nothing matching exists yet.
+## Workflow: "add `<component>` to library"
+The user downloads vendor Altium library packages via Chrome, which land (still zipped/unzipped)
+under `C:\Users\Ruben\Downloads\Chrome\...`. When told to add a component this way:
+
+1. Search `C:\Users\Ruben\Downloads\Chrome\` for `.SchLib` / `.PcbLib` files matching the named
+   component (folder names are often a distributor part ID, not the component name — search by
+   file name, not folder name).
+2. **Move** (not copy) the `.PcbLib` file to `PCB/Library/PCB/` and the `.SchLib` file to
+   `PCB/Library/SCH/`, keeping the original file name.
+3. **Clean up the download**: delete the source `.zip` the files came from (found as a sibling
+   of the extracted folder, e.g. `Downloads\Chrome\10897080.zip` next to `Downloads\Chrome\
+   10897080\`) AND delete the whole extracted folder itself — not just the two files taken from
+   it. This is important and easy to forget: the goal is a clean Downloads folder with no
+   leftover vendor-package clutter after every component is added.
+4. Document the part as a new row in the Excel library (see Columns/Workflow below).
+5. Do **not** open, import, or otherwise touch Altium itself — the user tests/validates the
+   moved library manually in Altium. The agent's job ends at moving files + cleanup + the Excel
+   row.
+6. If Description/TempMin/TempMax/Datasheet Link aren't already known from earlier in the
+   conversation, look them up or ask — don't leave them blank without trying.
+
+**Expected order of operations** for the general case: the user creates/downloads the actual
+`.SchLib`/`.PcbLib` files first, then asks to add the part to the Excel library. Always check
+the actual library folders for the real file/component names **before** writing the row —
+don't guess/default a Ref name if the files may already exist. Only fall back to a default
+(part number) if genuinely nothing matching exists yet.
+
+## Workflow: "delete `<component>`"
+When the user says to delete a component (by Part Number), remove it completely:
+
+1. Look up its row in `PartsLibrary` (by Part Number) to get its exact Library Path / Footprint
+   Path.
+2. Delete the `.SchLib` file (`PCB/Library/<Library Path>`) and the `.PcbLib` file
+   (`PCB/Library/<Footprint Path>`).
+3. Delete that row from the Excel `PartsLibrary` sheet.
+4. Confirm what was removed (part number, both file paths, row number) — this is destructive,
+   so state clearly what was deleted. If a library file is shared/referenced by more than one
+   Excel row (rare, but check), flag that before deleting the file itself.
 
 ## Target file
 `PCB/Library/TemPodLib.xlsx`, sheet `PartsLibrary`.
