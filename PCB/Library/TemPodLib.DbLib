@@ -28,7 +28,7 @@ UserWhere=0
 UserWhereText=
 BrowserOrder_Sorting=
 BrowserOrder_Grouping=
-BrowserOrder_Visible=Part Number0=104|Description0=1307|Library Ref0=104|Library Path0=165|Footprint Ref0=155|Footprint Path0=215|TempMin0=70|TempMax0=71|Datasheet Link0=634
+BrowserOrder_Visible=Part Number0=110|Description0=1307|Library Ref0=104|Library Path0=209|Footprint Ref0=173|Footprint Path0=233|TempMin0=70|TempMax0=71|Datasheet Link0=525
 [Table2]
 SchemaName=
 TableName=PartsLibrary$_xlnm#_FilterDatabase

@@ -34,6 +34,12 @@ Compact, current-state facts only. Not a changelog — update in place, don't ap
 - Generic passives (resistors, capacitors) may be sourced by **copying** an existing SchLib/
   PcbLib from another of the user's Altium projects (e.g. `Marble-Station-ESP32`) rather than
   downloading/creating new — same move+document flow, just `cp` instead of `mv`/new-file.
+- **Critical**: when copying a component from another project, that project usually has its own
+  library Excel too (e.g. `Marble-Station-ESP32\pcb\Library\MarbleLib.xlsx`) — always check it
+  for the FULL row (Description, TempMin/Max, Library Ref, Footprint Ref, Datasheet Link), don't
+  guess/derive fields from file names alone. Caught getting Library Ref wrong twice for
+  USB4125-GF-A-0190 (guessed `USB4125-GF-A-0190_REVA2` then `GCT_USB4125-GF-A-0190_REVA2`; real
+  value was `USB-C 2.0`) — this rule exists specifically to prevent that class of mistake.
 
 ## Open questions
 - None currently.

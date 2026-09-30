@@ -32,6 +32,22 @@ the actual library folders for the real file/component names **before** writing 
 don't guess/default a Ref name if the files may already exist. Only fall back to a default
 (part number) if genuinely nothing matching exists yet.
 
+## Workflow: "copy `<component>` from `<other project>`"
+When a component is copied from another of the user's Altium projects (e.g.
+`Marble-Station-ESP32`) instead of downloaded fresh:
+
+1. Copy the `.SchLib`/`.PcbLib` files as usual (into `PCB/Library/SCH/` and `PCB/Library/PCB/`).
+2. **Critical — do not skip**: that other project almost certainly has its own library Excel
+   (e.g. `Marble-Station-ESP32\pcb\Library\MarbleLib.xlsx`). Open it and find that component's
+   row. Use its exact Description, TempMin, TempMax, **Library Ref**, **Footprint Ref**, and
+   Datasheet Link values — do not guess or derive these from file names. File names and internal
+   Refs frequently differ (e.g. `USB4125-GF-A-0190_REVA2.SchLib` contains a symbol literally
+   named `USB-C 2.0`, not derived from the file name at all) — guessing here has caused wrong
+   entries before. Only fall back to inspecting/asking if that source project has no library
+   Excel at all.
+3. Insert the row into `PartsLibrary` using those confirmed values, translating paths to this
+   project's convention (`SCH/<file>.SchLib`, `PCB/<file>.PcbLib`).
+
 ## Workflow: "delete `<component>`"
 When the user says to delete a component (by Part Number), remove it completely:
 
